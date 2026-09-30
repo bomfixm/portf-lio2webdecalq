@@ -135,9 +135,6 @@
   padding: 0;
   list-style: none;
 }
-.drop-wide {
-  grid-column: 1 / -1;
-}
 .drop-tile {
   position: relative;
   display: flex;

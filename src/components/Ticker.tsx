@@ -4,6 +4,7 @@ import { Pause, Play } from "lucide-react";
 import { services } from "@/data/services";
 import { technologyGroups } from "@/data/technologies";
 import { useReducedMotion } from "./Motion";
+import { MotionToggle } from "./MotionToggle";
 
 /**
  * Duas faixas contínuas de serviços e tecnologias reais, em velocidades e
@@ -16,9 +17,9 @@ import { useReducedMotion } from "./Motion";
  * fazer nada. Quem manda é `data-run` neste elemento (e não uma regra
  * `@media` solta, que já foi sobrescrita por ordem de import uma vez).
  *
- * `prefers-reduced-motion` é preservado: nesse caso a faixa NÃO começa a
- * andar sozinha e o botão passa a ser um convite ("Ativar movimento"). Se o
- * visitante ativar, ela anda mais devagar (`data-calm`) em vez de não existir.
+ * Com movimento reduzido a faixa fica parada e, no lugar do botão de pausa,
+ * aparece o interruptor do site — é aqui que o visitante costuma notar que
+ * algo está estático, então é aqui que ele pode ligar o movimento.
  */
 function Row({
   items,
@@ -57,47 +58,42 @@ function Row({
 
 export function Ticker() {
   const reduced = useReducedMotion();
-  /* null = ninguém escolheu ainda, então vale a preferência do sistema.
-     Ajuste automático depois da hidratação, sem efeito no meio. */
-  const [escolha, setEscolha] = useState<boolean | null>(null);
-  const rodando = escolha ?? !reduced;
+  const [pausado, setPausado] = useState(false);
+  const rodando = !reduced && !pausado;
 
   const servicos = services.map((s) => s.title);
   const tecnologias = technologyGroups.flatMap((g) => g.items);
-
-  const rotulo = rodando
-    ? "Pausar movimento"
-    : reduced
-      ? "Ativar movimento"
-      : "Retomar movimento";
 
   return (
     <section
       className="ticker"
       data-run={rodando ? "true" : "false"}
-      data-calm={reduced ? "true" : undefined}
       aria-label="Serviços e tecnologias"
     >
       <Row items={[...servicos, ...tecnologias]} speed={52} />
       <Row items={[...tecnologias, ...servicos]} reverse speed={74} />
       <div className="ticker-foot">
-        {reduced && !rodando && (
-          <p className="ticker-nota">
-            Seu sistema pede movimento reduzido, então a faixa está parada.
-          </p>
+        {reduced ? (
+          <>
+            <p className="ticker-nota">
+              Movimento reduzido: a faixa está parada.
+            </p>
+            <MotionToggle compacto />
+          </>
+        ) : (
+          <button
+            type="button"
+            className="ticker-toggle"
+            onClick={() => setPausado((v) => !v)}
+          >
+            {pausado ? (
+              <Play size={14} aria-hidden="true" />
+            ) : (
+              <Pause size={14} aria-hidden="true" />
+            )}
+            <span>{pausado ? "Retomar movimento" : "Pausar movimento"}</span>
+          </button>
         )}
-        <button
-          type="button"
-          className="ticker-toggle"
-          onClick={() => setEscolha(!rodando)}
-        >
-          {rodando ? (
-            <Pause size={14} aria-hidden="true" />
-          ) : (
-            <Play size={14} aria-hidden="true" />
-          )}
-          <span>{rotulo}</span>
-        </button>
       </div>
     </section>
   );

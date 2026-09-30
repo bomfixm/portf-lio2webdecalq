@@ -63,13 +63,20 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body>
-        {/* Roda antes da primeira pintura, sem depender do React: marca que há
-            JS (as revelações só se escondem com ele) e, na home, segura o hero
-            até a intro terminar. O temporizador libera a página mesmo que o
-            React nunca monte. Sem memória de sessão: a intro toca sempre. */}
+        {/* Roda antes da primeira pintura, sem depender do React:
+            1. marca que há JS (as revelações só se escondem com ele);
+            2. publica o modo de movimento em `data-motion`, de onde TODO o CSS
+               de animação depende — a escolha do visitante vence a preferência
+               do sistema, que é o padrão (ver src/lib/movimento.ts);
+            3. na home, segura o hero até a intro terminar, com um temporizador
+               que libera a página mesmo que o React nunca monte.
+            Sem memória de sessão: a intro toca sempre. */}
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var d=document.documentElement;d.classList.add("js");
+var e=null;try{e=localStorage.getItem("decalq:movimento")}catch(x){}
+var calmo=(e==="completo"||e==="calmo")?e==="calmo":matchMedia("(prefers-reduced-motion: reduce)").matches;
+d.dataset.motion=calmo?"calmo":"completo";
 var p=location.pathname.replace(/\\/+$/,"")||"/";
 if(p!=="/")return;
 d.dataset.intro="play";

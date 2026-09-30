@@ -289,6 +289,64 @@
   color: var(--blue-soft);
 }
 
+/* --- interruptor de movimento ---------------------------------------------- */
+.mov-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-pill);
+  background: rgb(255 255 255 / 0.04);
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    color var(--dur-micro) var(--ease),
+    border-color var(--dur-micro) var(--ease),
+    background-color var(--dur-micro) var(--ease),
+    transform var(--dur-micro) var(--ease);
+}
+.mov-btn:hover {
+  color: #fff;
+  border-color: rgb(var(--blue-rgb) / 0.6);
+  background: rgb(var(--blue-rgb) / 0.12);
+}
+.mov-btn:active {
+  transform: scale(0.96);
+}
+.mov-btn-forte {
+  border-color: rgb(var(--blue-rgb) / 0.5);
+  background: rgb(var(--blue-rgb) / 0.14);
+  color: #dce9ff;
+}
+.mov {
+  display: grid;
+  gap: 14px;
+  padding: 20px 22px;
+  border-radius: var(--r-lg);
+  background: rgb(var(--blue-rgb) / 0.07);
+  box-shadow: inset 0 0 0 1px rgb(var(--blue-rgb) / 0.2);
+}
+.mov-texto {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--text-2);
+  font-size: 0.95rem;
+}
+.mov-texto strong {
+  color: var(--text);
+}
+.mov-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 /* --- entrada de texto ------------------------------------------------------ */
 .field {
   display: flex;

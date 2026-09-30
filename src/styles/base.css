@@ -171,55 +171,55 @@ button {
 }
 
 /* --- revelações ---------------------------------------------------------- */
-/* Só esconde com JS ativo e sem movimento reduzido; senão, tudo visível. */
-@media (prefers-reduced-motion: no-preference) {
-  html.js .reveal {
-    transition:
-      opacity var(--dur-reveal) var(--ease) var(--d, 0s),
-      transform var(--dur-reveal) var(--ease) var(--d, 0s),
-      filter var(--dur-reveal) var(--ease) var(--d, 0s),
-      clip-path var(--dur-slow) var(--ease) var(--d, 0s);
-  }
-  html.js .reveal:not([data-in]) {
-    opacity: 0;
-  }
-  html.js .reveal[data-reveal="up"]:not([data-in]) {
-    transform: translateY(32px);
-  }
-  html.js .reveal[data-reveal="left"]:not([data-in]) {
-    transform: translateX(-36px);
-  }
-  html.js .reveal[data-reveal="right"]:not([data-in]) {
-    transform: translateX(36px);
-  }
-  html.js .reveal[data-reveal="scale"]:not([data-in]) {
-    transform: scale(0.94);
-  }
-  html.js .reveal[data-reveal="blur"]:not([data-in]) {
-    transform: translateY(16px);
-    filter: blur(14px);
-  }
-  html.js .reveal[data-reveal="mask"]:not([data-in]) {
-    opacity: 1;
-    clip-path: inset(0 100% 0 0);
-  }
+/* A condicao e o modo de movimento publicado em <html data-motion>
+   (lib/movimento): o interruptor do site vale aqui tambem. Sem JS o
+   atributo nunca existe e nada se esconde. */
+html.js[data-motion="completo"] .reveal {
+  transition:
+    opacity var(--dur-reveal) var(--ease) var(--d, 0s),
+    transform var(--dur-reveal) var(--ease) var(--d, 0s),
+    filter var(--dur-reveal) var(--ease) var(--d, 0s),
+    clip-path var(--dur-slow) var(--ease) var(--d, 0s);
+}
+html.js[data-motion="completo"] .reveal:not([data-in]) {
+  opacity: 0;
+}
+html.js[data-motion="completo"] .reveal[data-reveal="up"]:not([data-in]) {
+  transform: translateY(32px);
+}
+html.js[data-motion="completo"] .reveal[data-reveal="left"]:not([data-in]) {
+  transform: translateX(-36px);
+}
+html.js[data-motion="completo"] .reveal[data-reveal="right"]:not([data-in]) {
+  transform: translateX(36px);
+}
+html.js[data-motion="completo"] .reveal[data-reveal="scale"]:not([data-in]) {
+  transform: scale(0.94);
+}
+html.js[data-motion="completo"] .reveal[data-reveal="blur"]:not([data-in]) {
+  transform: translateY(16px);
+  filter: blur(14px);
+}
+html.js[data-motion="completo"] .reveal[data-reveal="mask"]:not([data-in]) {
+  opacity: 1;
+  clip-path: inset(0 100% 0 0);
+}
 
-  html.js .lines .line {
-    display: block;
-    overflow: hidden;
-    padding-bottom: 0.12em;
-    margin-bottom: -0.12em;
-  }
-  html.js .lines .line > span {
-    display: block;
-    transition:
-      transform var(--dur-slow) var(--ease) calc(var(--d, 0s) + var(--i, 0) * 90ms),
-      opacity var(--dur-reveal) var(--ease) calc(var(--d, 0s) + var(--i, 0) * 90ms);
-  }
-  html.js .lines:not([data-in]) .line > span {
-    transform: translateY(108%);
-    opacity: 0;
-  }
+html.js[data-motion="completo"] .lines .line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+html.js[data-motion="completo"] .lines .line > span {
+  display: block;
+  transition:
+    transform var(--dur-slow) var(--ease) calc(var(--d, 0s) + var(--i, 0) * 90ms),
+    opacity var(--dur-reveal) var(--ease) calc(var(--d, 0s) + var(--i, 0) * 90ms);
+}
+html.js[data-motion="completo"] .lines:not([data-in]) .line > span {
+  transform: translateY(108%);
+  opacity: 0;
 }
 .lines .line {
   display: block;
@@ -279,22 +279,20 @@ html[data-leaving="true"] main {
   opacity: 0.5;
   transition: opacity 140ms var(--ease);
 }
-@media (prefers-reduced-motion: reduce) {
-  /* sem deslocamento: só o cruzamento de opacidade, mais curto */
-  .route {
-    animation: route-in-calmo 220ms var(--ease) both;
+/* modo calmo: sem deslocamento, só o cruzamento de opacidade, mais curto */
+html[data-motion="calmo"] .route {
+  animation: route-in-calmo 220ms var(--ease) both;
+}
+@keyframes route-in-calmo {
+  from {
+    opacity: 0;
   }
-  @keyframes route-in-calmo {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  to {
+    opacity: 1;
   }
-  html[data-leaving="true"] main {
-    opacity: 0.65;
-  }
+}
+html[data-motion="calmo"][data-leaving="true"] main {
+  opacity: 0.65;
 }
 .page-top {
   padding-top: calc(var(--header-h) + clamp(48px, 8vw, 110px));

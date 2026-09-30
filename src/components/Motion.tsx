@@ -8,6 +8,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
+import { useMovimento } from "@/lib/movimento";
 
 /* ---------------------------------------------------------------------------
    Tokens de movimento compartilhados (CSS usa os mesmos em tokens.css).
@@ -46,8 +47,13 @@ export function useMounted(): boolean {
   );
 }
 
+/**
+ * Movimento reduzido EFETIVO: o sistema pede, ou o visitante escolheu.
+ * Não consulta `prefers-reduced-motion` direto — quem resolve é
+ * `lib/movimento`, para o interruptor do site valer em todos os efeitos.
+ */
 export function useReducedMotion(): boolean {
-  return useMediaQuery("(prefers-reduced-motion: reduce)");
+  return useMovimento().calmo;
 }
 
 /** Mouse com hover de verdade (não toque). */

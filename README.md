@@ -26,6 +26,18 @@ npm run lint && npm run typecheck && npm run build   # gera out/
 
 **Prospecção:** `https://SEU-DOMINIO/?origem=whatsapp` troca o rótulo para "Continuar nossa conversa no WhatsApp" e a mensagem inicial. A origem fica guardada na aba (`sessionStorage`) e sobrevive à navegação interna. `NEXT_PUBLIC_WHATSAPP_PROSPECCAO` opcionalmente define outro número para esse caso. O clique só abre a conversa: o site não sabe se a mensagem foi enviada nem identifica o chat de origem.
 
+## Movimento: uma fonte só
+
+`src/lib/movimento.ts` resolve o modo em vigor e publica em `<html data-motion="completo|calmo">`, escrito **antes da primeira pintura** pelo script em `layout.tsx`.
+
+- Padrão: respeita `prefers-reduced-motion` do sistema.
+- O visitante pode decidir o contrário pelo interruptor (`MotionToggle`), no rodapé e no pé da faixa. A escolha vence a preferência do sistema e fica em `localStorage` (`decalq:movimento`).
+- **Todo** o CSS de animação condiciona a `html[data-motion="completo"]` — não existe mais nenhuma `@media (prefers-reduced-motion)` nos estilos. Todo componente pergunta por `useReducedMotion()`, que lê o mesmo estado.
+
+Isso é deliberado: antes, a mesma decisão morava em `@media` espalhadas por vários arquivos CSS, e uma regra duplicada em `pages.css` sobrescreveu `home.css` por ordem de import, deixando um botão de pausa sobre uma faixa que nunca se movia.
+
+**Ao depurar "a animação não roda":** verifique `document.documentElement.dataset.motion` e conte quadros com `requestAnimationFrame`. Zero quadros por segundo com `visibilityState: "visible"` significa que a janela do navegador está oculta ou minimizada — o compositor não tica e qualquer animação congela. É o ambiente, não o código.
+
 ## Comportamentos
 
 - **Intro:** só o decalqzinho (`Intro.tsx`). Toca ao abrir, recarregar, voltar de outra página (link ou histórico) e ao restaurar do bfcache; nunca por sessão/visita. "Pular intro", Esc/clique/rolagem, versão calma com `prefers-reduced-motion` e liberação por temporizador (script inline em `layout.tsx`) se algo falhar. Âncoras dentro da home não reiniciam.

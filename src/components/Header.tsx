@@ -218,13 +218,13 @@ export function Header() {
             exit={{ opacity: 0, y: -10, scale: 0.98, transition: { duration: 0.2 } }}
             transition={{ duration: 0.4, ease: EASE }}
           >
+            {/* quatro itens em 2x2: nenhum sobra sozinho na última linha */}
             <ul className="drop-grid">
               {navLinks.map(({ label, href, icon: Icon }, i) => {
                 const on = ativo === href;
                 return (
                   <motion.li
                     key={href}
-                    className={i === 0 ? "drop-wide" : undefined}
                     initial={reduced ? false : { opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.06 + i * 0.05, duration: 0.45, ease: EASE }}

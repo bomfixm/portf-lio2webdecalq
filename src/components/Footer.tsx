@@ -6,6 +6,7 @@ import { useContato } from "@/lib/contact";
 import { registrarEvento } from "@/lib/metricas";
 import { Brand, footerLinks } from "./Header";
 import { CursorCta } from "./CursorCta";
+import { MotionToggle } from "./MotionToggle";
 import { Lines, Reveal } from "./Motion";
 
 /** "Vamos construir algo juntos?": o único CTA principal da seção. */
@@ -116,6 +117,7 @@ export function Footer() {
             © {new Date().getFullYear()} {siteConfig.brand}. Todos os direitos
             reservados.
           </span>
+          <MotionToggle compacto />
           <Link href="/metricas/" className="footer-small">
             Métricas
           </Link>

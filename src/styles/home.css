@@ -109,16 +109,14 @@
 .hero-stack:hover .hs-2 {
   transform: rotate(7deg) translate(8px, -4px);
 }
-@media (prefers-reduced-motion: no-preference) {
-  .hs-1 {
-    animation: hs-flutua 7s ease-in-out infinite;
-  }
-  .hs-2 {
-    animation: hs-flutua 8s ease-in-out -2s infinite;
-  }
-  .hs-3 {
-    animation: hs-flutua 6.5s ease-in-out -4s infinite;
-  }
+html[data-motion="completo"] .hs-1 {
+  animation: hs-flutua 7s ease-in-out infinite;
+}
+html[data-motion="completo"] .hs-2 {
+  animation: hs-flutua 8s ease-in-out -2s infinite;
+}
+html[data-motion="completo"] .hs-3 {
+  animation: hs-flutua 6.5s ease-in-out -4s infinite;
 }
 @keyframes hs-flutua {
   50% {
@@ -188,10 +186,8 @@
     transform: scale(1);
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .hero-chip[data-on="true"] {
-    animation: none;
-  }
+html[data-motion="calmo"] .hero-chip[data-on="true"] {
+  animation: none;
 }
 
 .hero-foot {
@@ -239,10 +235,6 @@
 /* Quem decide é o estado no React (Ticker.tsx), não uma regra @media solta. */
 .ticker[data-run="true"] .ticker-track {
   animation-play-state: running;
-}
-/* movimento reduzido e ativado pelo visitante: a mesma faixa, mais devagar */
-.ticker[data-calm="true"] {
-  --mult: 1.9;
 }
 .ticker-row.is-reverse .ticker-track {
   animation-direction: reverse;
@@ -548,11 +540,9 @@
   padding: 0;
   list-style: none;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .panel-techs .float {
-    animation: flutua 5s ease-in-out infinite;
-    animation-delay: calc(var(--k) * -1.3s);
-  }
+html[data-motion="completo"] .panel-techs .float {
+  animation: flutua 5s ease-in-out infinite;
+  animation-delay: calc(var(--k) * -1.3s);
 }
 @keyframes flutua {
   50% {
@@ -1355,19 +1345,17 @@
 .g-flow .pulse {
   fill: #fff;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .flow-line {
-    animation: flow 1.4s linear infinite;
-  }
-  .flow-line.l2 {
-    animation-duration: 1.9s;
-  }
-  .g-flow .pulse {
-    animation: pulso 2s ease-in-out infinite;
-  }
-  .g-flow .pulse.p2 {
-    animation-delay: -1s;
-  }
+html[data-motion="completo"] .flow-line {
+  animation: flow 1.4s linear infinite;
+}
+html[data-motion="completo"] .flow-line.l2 {
+  animation-duration: 1.9s;
+}
+html[data-motion="completo"] .g-flow .pulse {
+  animation: pulso 2s ease-in-out infinite;
+}
+html[data-motion="completo"] .g-flow .pulse.p2 {
+  animation-delay: -1s;
 }
 @keyframes flow {
   to {
@@ -1468,12 +1456,10 @@
   stroke-linejoin: round;
   filter: drop-shadow(0 0 8px rgb(255 255 255 / 0.8));
 }
-@media (prefers-reduced-motion: no-preference) {
-  .g-chart .bars b {
-    transform-origin: bottom;
-    animation: barra 3.4s var(--ease-io) infinite alternate;
-    animation-delay: calc(var(--k) * -0.35s);
-  }
+html[data-motion="completo"] .g-chart .bars b {
+  transform-origin: bottom;
+  animation: barra 3.4s var(--ease-io) infinite alternate;
+  animation-delay: calc(var(--k) * -0.35s);
 }
 @keyframes barra {
   to {
@@ -1732,15 +1718,16 @@
 .cta {
   padding-block: 0 var(--section-y);
 }
-/* O texto fica no alto e a faixa de baixo é reservada: é nela que a cápsula
-   do CTA passeia com o cursor, sem cobrir título nem parágrafo. */
+/* O texto fica no alto. No desktop com mouse a faixa de baixo é reservada
+   para a cápsula passear sem cobrir o texto (ver a regra de hover mais
+   abaixo); no toque não existe cápsula, então também não se reserva espaço. */
 .cta-panel {
   position: relative;
   display: grid;
   align-content: start;
   justify-items: center;
-  min-height: clamp(560px, 66vh, 740px);
-  padding: clamp(48px, 8vw, 96px) var(--gutter) clamp(150px, 20vh, 240px);
+  min-height: clamp(420px, 52vh, 560px);
+  padding: clamp(48px, 8vw, 96px) var(--gutter);
   border-radius: var(--r-xl);
   overflow: hidden;
   isolation: isolate;
@@ -1829,8 +1816,13 @@
 }
 /* Mouse fino e sem movimento reduzido: só o seguidor aparece. O botão
    estático continua no DOM para o teclado e reaparece ao receber foco. */
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .cta-hint {
+@media (hover: hover) and (pointer: fine) {
+  /* aqui a cápsula existe: reserva a faixa de baixo para ela passear */
+  html[data-motion="completo"] .cta-panel {
+    min-height: clamp(560px, 66vh, 740px);
+    padding-bottom: clamp(150px, 20vh, 240px);
+  }
+  html[data-motion="completo"] .cta-hint {
     display: block;
   }
   .cta-static {

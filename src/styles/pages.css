@@ -1088,10 +1088,8 @@
     transform: rotate(360deg);
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .spin {
-    animation: none;
-  }
+html[data-motion="calmo"] .spin {
+  animation: none;
 }
 .viewer-bar {
   position: absolute;
