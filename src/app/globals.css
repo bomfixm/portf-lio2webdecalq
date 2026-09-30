@@ -1,0 +1,14 @@
+/* Tailwind entra só com tema e preflight (reset). Os utilitários ficam de fora
+   de propósito: o sistema visual usa classes próprias (.container, .h-2...) e
+   os nomes colidiriam com utilitários como `.h-2 { height: .5rem }`. */
+@layer theme, base;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+
+@import "../styles/tokens.css";
+@import "../styles/base.css";
+@import "../styles/controls.css";
+@import "../styles/intro.css";
+@import "../styles/header.css";
+@import "../styles/home.css";
+@import "../styles/pages.css";

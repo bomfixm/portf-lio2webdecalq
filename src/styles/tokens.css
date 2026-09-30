@@ -1,0 +1,98 @@
+/* ==========================================================================
+   Tokens do sistema visual Decalq.
+   Única fonte de cor, tipografia, espaço, raio, borda, sombra e movimento.
+   Direção: carvão com influência azul, azul do decalqzinho como acento,
+   ciano/violeta como apoio, painéis claros para variar o ritmo.
+   ========================================================================== */
+:root {
+  color-scheme: dark;
+
+  /* --- superfícies (carvão azulado, do mais fundo ao mais alto) --- */
+  --bg: #05070d;
+  --bg-2: #090d17;
+  --surface: #0d1322;
+  --surface-2: #121a2f;
+  --surface-3: #18233f;
+  --surface-glass: rgb(14 21 40 / 0.62);
+
+  /* --- painéis claros --- */
+  --light: #e9f0ff;
+  --light-2: #d3e0ff;
+  --ink: #0a1230;
+  --ink-2: #33415f;
+
+  /* --- texto --- */
+  --text: #eef3ff;
+  --text-2: #b0bcd6; /* 9.5:1 sobre --bg */
+  --text-3: #8592b0; /* 5.7:1 sobre --bg */
+
+  /* --- azul do decalqzinho e apoio --- */
+  --blue: #5b98ff;
+  --blue-2: #3a78f5;
+  --blue-deep: #1a3fbf;
+  --blue-soft: #9dc0ff;
+  --cyan: #52d8ff;
+  --violet: #8f7cff;
+  --indigo: #4a54e8;
+  --blue-rgb: 91 152 255;
+  --cyan-rgb: 82 216 255;
+  --violet-rgb: 143 124 255;
+
+  /* --- bordas --- */
+  --line: rgb(130 170 255 / 0.13);
+  --line-2: rgb(150 190 255 / 0.26);
+  --line-light: rgb(10 18 48 / 0.12);
+
+  /* --- gradientes --- */
+  --grad-blue: linear-gradient(135deg, #7db0ff 0%, #4a86ff 55%, #2b5be0 100%);
+  --grad-text: linear-gradient(100deg, #b9d3ff 0%, #6fa6ff 45%, #52d8ff 100%);
+  --grad-panel-blue: radial-gradient(120% 90% at 20% 0%, #3a78f5 0%, #1a3fbf 48%, #0b1d63 100%);
+  --grad-panel-violet: radial-gradient(120% 90% at 80% 0%, #7a68ff 0%, #4234c9 50%, #170f66 100%);
+  --grad-panel-cyan: radial-gradient(120% 90% at 20% 0%, #37c7f0 0%, #1a7bd8 48%, #0a2b78 100%);
+  --grad-panel-light: linear-gradient(160deg, #f4f8ff 0%, #d7e4ff 60%, #bfd3ff 100%);
+
+  /* --- tipografia --- */
+  --font-display: var(--font-bricolage), "Segoe UI", system-ui, sans-serif;
+  --font-sans: var(--font-manrope), "Segoe UI", system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "Cascadia Code", monospace;
+
+  --fs-hero: clamp(2.5rem, 1.2rem + 6.4vw, 7rem); /* 40-112px */
+  --fs-1: clamp(2.25rem, 1rem + 5.2vw, 5.5rem);
+  --fs-2: clamp(2rem, 1rem + 3.6vw, 4.25rem);
+  --fs-3: clamp(1.4rem, 1rem + 1.3vw, 2.125rem);
+  --fs-lead: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem); /* 17-20px */
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-mono: 0.75rem;
+
+  /* --- espaço e layout --- */
+  --gutter: clamp(20px, 4vw, 40px);
+  --container: 1360px;
+  --section-y: clamp(72px, 10vw, 148px);
+  --gap: clamp(14px, 2vw, 24px);
+  /* topo (14px) + altura da cápsula (64px): usado na compensação de âncoras */
+  --header-h: 78px;
+
+  /* --- raios --- */
+  --r-xs: 10px;
+  --r-sm: 16px;
+  --r-md: 24px;
+  --r-lg: 36px;
+  --r-xl: 48px;
+  --r-pill: 999px;
+
+  /* --- sombras e brilhos --- */
+  --shadow-1: 0 8px 24px -8px rgb(0 0 0 / 0.55);
+  --shadow-2: 0 30px 70px -20px rgb(0 0 0 / 0.65);
+  --glow-blue: 0 0 0 1px rgb(var(--blue-rgb) / 0.35), 0 10px 44px -6px rgb(var(--blue-rgb) / 0.55);
+  --glow-soft: 0 0 60px -10px rgb(var(--blue-rgb) / 0.5);
+  --rim: inset 0 1px 0 rgb(255 255 255 / 0.1), inset 0 0 0 1px rgb(255 255 255 / 0.04);
+
+  /* --- movimento --- */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 200ms;
+  --dur-base: 450ms;
+  --dur-reveal: 800ms;
+  --dur-slow: 1100ms;
+}

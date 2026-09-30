@@ -1,0 +1,343 @@
+/* ==========================================================================
+   Controles: botões luminosos e chips em cápsula.
+   Referências: botão "Create" (acabamento), WalletConnect/Phantom (repouso x
+   ativo), vídeo do "Generate Site" (luz na borda, halo, resposta ao clique).
+   ========================================================================== */
+.btn {
+  --btn-h: 54px;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: var(--btn-h);
+  padding: 0 28px;
+  border: 0;
+  border-radius: var(--r-pill);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    transform var(--dur-base) var(--ease),
+    box-shadow var(--dur-base) var(--ease),
+    filter var(--dur-micro) var(--ease),
+    background-color var(--dur-base) var(--ease),
+    border-color var(--dur-base) var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-sm {
+  --btn-h: 42px;
+  padding: 0 20px;
+  font-size: 0.9rem;
+}
+.btn-lg {
+  --btn-h: 64px;
+  padding: 0 36px;
+  font-size: 1.125rem;
+}
+.btn-label {
+  position: relative;
+  z-index: 2;
+}
+.btn-arrow {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  transition: transform var(--dur-base) var(--ease);
+}
+.btn:hover .btn-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* luz do ponteiro (só mouse: --mx/--my vêm de usePointerVars) */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: radial-gradient(
+    120px circle at var(--mx, 50%) var(--my, 0%),
+    rgb(255 255 255 / 0.55),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease);
+  pointer-events: none;
+}
+.btn:hover::after {
+  opacity: 1;
+}
+
+/* filete de luz na borda superior */
+.btn::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  left: 14%;
+  right: 14%;
+  top: 1px;
+  height: 1px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.95), transparent);
+  opacity: 0.75;
+  transition: opacity var(--dur-base) var(--ease), left var(--dur-base) var(--ease),
+    right var(--dur-base) var(--ease);
+  pointer-events: none;
+}
+.btn:hover::before {
+  opacity: 1;
+  left: 6%;
+  right: 6%;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 4px;
+  border-radius: var(--r-pill);
+}
+
+/* --- luz: CTA principal (corpo claro, texto em gradiente, halo azul) ------ */
+.btn-luz {
+  color: transparent;
+  background: linear-gradient(180deg, #f7f9ff 0%, #c9dbff 36%, #94b8ff 70%, #cdeeff 100%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    inset 0 -6px 14px rgb(91 152 255 / 0.35),
+    0 0 0 1px rgb(255 255 255 / 0.18),
+    0 0 44px -4px rgb(var(--blue-rgb) / 0.55),
+    0 14px 34px -12px rgb(var(--blue-rgb) / 0.7);
+}
+.btn-luz .btn-label {
+  background: linear-gradient(95deg, #1a3fbf 0%, #4a3fe0 60%, #6a3fe0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.btn-luz .btn-arrow {
+  color: #2b47d0;
+}
+.btn-luz:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.95),
+    inset 0 -6px 14px rgb(91 152 255 / 0.4),
+    0 0 0 1px rgb(255 255 255 / 0.3),
+    0 0 76px 2px rgb(var(--blue-rgb) / 0.8),
+    0 20px 44px -12px rgb(var(--blue-rgb) / 0.85);
+}
+.btn-luz:active {
+  transform: translateY(1px) scale(0.97);
+  filter: brightness(0.93) saturate(1.1);
+  box-shadow:
+    inset 0 3px 10px rgb(26 63 191 / 0.35),
+    0 0 0 1px rgb(255 255 255 / 0.12),
+    0 0 26px -4px rgb(var(--blue-rgb) / 0.5);
+}
+
+/* --- azul: CTA sólido ----------------------------------------------------- */
+.btn-azul {
+  color: #fff;
+  background: linear-gradient(180deg, #74a8ff 0%, #3d78f6 55%, #2a56d9 100%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.5),
+    inset 0 -8px 18px rgb(140 185 255 / 0.35),
+    0 0 0 1px rgb(58 120 245 / 0.6),
+    0 10px 36px -8px rgb(var(--blue-rgb) / 0.7);
+}
+.btn-azul:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.6),
+    inset 0 -8px 18px rgb(140 185 255 / 0.5),
+    0 0 0 1px rgb(120 175 255 / 0.8),
+    0 0 60px 0 rgb(var(--blue-rgb) / 0.7);
+}
+.btn-azul:active {
+  transform: translateY(1px) scale(0.97);
+  filter: brightness(0.85);
+  box-shadow:
+    inset 0 3px 10px rgb(6 20 80 / 0.5),
+    0 0 20px -4px rgb(var(--blue-rgb) / 0.5);
+}
+
+/* --- vidro: secundário ----------------------------------------------------- */
+.btn-vidro {
+  color: var(--text);
+  background: rgb(255 255 255 / 0.05);
+  box-shadow: inset 0 0 0 1px var(--line-2), var(--rim);
+  backdrop-filter: blur(10px);
+}
+.btn-vidro::before {
+  opacity: 0.25;
+}
+.btn-vidro:hover {
+  background: rgb(var(--blue-rgb) / 0.14);
+  box-shadow: inset 0 0 0 1px rgb(var(--blue-rgb) / 0.7), 0 0 34px -8px rgb(var(--blue-rgb) / 0.6);
+  transform: translateY(-2px);
+}
+.btn-vidro::after {
+  background: radial-gradient(
+    140px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(var(--blue-rgb) / 0.3),
+    transparent 70%
+  );
+}
+.btn-vidro:active {
+  background: rgb(var(--blue-rgb) / 0.06);
+  transform: translateY(1px) scale(0.97);
+}
+
+/* variante para superfícies claras */
+.on-light .btn-vidro {
+  color: var(--ink);
+  background: rgb(10 18 48 / 0.06);
+  box-shadow: inset 0 0 0 1px var(--line-light);
+}
+.on-light .btn-vidro:hover {
+  background: rgb(10 18 48 / 0.12);
+  box-shadow: inset 0 0 0 1px rgb(10 18 48 / 0.35);
+}
+
+/* --- texto: ação discreta -------------------------------------------------- */
+.btn-texto {
+  --btn-h: 44px;
+  padding: 0 4px;
+  color: var(--blue-soft);
+  background: none;
+  border-radius: var(--r-xs);
+}
+.btn-texto::before,
+.btn-texto::after {
+  display: none;
+}
+.btn-texto .btn-label {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px no-repeat;
+  padding-bottom: 3px;
+  transition: background-size var(--dur-base) var(--ease);
+}
+.btn-texto:hover {
+  color: #fff;
+}
+.btn-texto:hover .btn-label {
+  background-size: 100% 1px;
+}
+.btn-texto:active {
+  transform: scale(0.97);
+}
+
+/* --- chips e filtros (repouso x ativo bem distintos) ----------------------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid rgb(var(--blue-rgb) / 0.24);
+  border-radius: var(--r-pill);
+  background: rgb(var(--blue-rgb) / 0.09);
+  color: var(--blue-soft);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-base) var(--ease),
+    border-color var(--dur-base) var(--ease),
+    color var(--dur-base) var(--ease),
+    transform var(--dur-micro) var(--ease),
+    box-shadow var(--dur-base) var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.chip:hover {
+  background: rgb(var(--blue-rgb) / 0.2);
+  border-color: rgb(var(--blue-rgb) / 0.55);
+  color: #d7e6ff;
+}
+.chip:active {
+  transform: scale(0.96);
+}
+.chip[aria-pressed="true"],
+.chip[aria-current="true"] {
+  background: linear-gradient(180deg, #4d88ff, #2f63e8);
+  border-color: rgb(157 192 255 / 0.9);
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.4),
+    0 0 26px -4px rgb(var(--blue-rgb) / 0.75);
+}
+.chip .chip-count {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  opacity: 0.7;
+}
+.chip-static {
+  cursor: default;
+  min-height: 34px;
+  padding: 0 14px;
+  font-size: 0.82rem;
+}
+.chip-static:hover {
+  background: rgb(var(--blue-rgb) / 0.09);
+  border-color: rgb(var(--blue-rgb) / 0.24);
+  color: var(--blue-soft);
+}
+
+/* --- entrada de texto ------------------------------------------------------ */
+.field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 0 20px;
+  border-radius: var(--r-pill);
+  background: rgb(255 255 255 / 0.04);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+  transition: box-shadow var(--dur-base) var(--ease), background-color var(--dur-base) var(--ease);
+}
+.field:focus-within {
+  background: rgb(var(--blue-rgb) / 0.08);
+  box-shadow: inset 0 0 0 1.5px var(--blue), 0 0 34px -10px rgb(var(--blue-rgb) / 0.7);
+}
+.field input {
+  flex: 1;
+  min-width: 0;
+  height: 54px;
+  border: 0;
+  outline: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+}
+.field input::placeholder {
+  color: var(--text-3);
+}
+.field button {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.08);
+  cursor: pointer;
+}
+.field button:hover {
+  background: rgb(255 255 255 / 0.16);
+}
+
+@media (max-width: 480px) {
+  .btn {
+    padding: 0 22px;
+  }
+  .btn-lg {
+    padding: 0 26px;
+    font-size: 1.0625rem;
+  }
+}
