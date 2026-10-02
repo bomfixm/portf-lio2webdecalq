@@ -1,0 +1,299 @@
+/* ==========================================================================
+   Base: reset complementar, tipografia, layout, revelações, símbolo, ambiente.
+   ========================================================================== */
+html {
+  background: var(--bg);
+  /* âncoras param abaixo do cabeçalho fixo, inclusive em scrollIntoView */
+  scroll-padding-top: calc(var(--header-h) + 24px);
+  -webkit-text-size-adjust: 100%;
+}
+/* `clip` (e não `hidden`) impede rolagem lateral sem criar contêiner de
+   rolagem, então o `position: sticky` da faixa horizontal continua valendo. */
+body {
+  margin: 0;
+  min-height: 100dvh;
+  overflow-x: clip;
+  /* sem fundo próprio: o do <html> fica embaixo do ambiente (.ambient, z -1);
+     um fundo no body seria pintado por cima dele */
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+::selection {
+  background: rgb(var(--blue-rgb) / 0.45);
+  color: #fff;
+}
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button {
+  font: inherit;
+  color: inherit;
+}
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* --- ambiente: luzes fixas, sem filtro caro ------------------------------ */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 12% -8%, rgb(var(--blue-rgb) / 0.2), transparent 70%),
+    radial-gradient(50% 45% at 100% 30%, rgb(var(--violet-rgb) / 0.12), transparent 70%),
+    radial-gradient(60% 50% at 30% 110%, rgb(var(--cyan-rgb) / 0.08), transparent 70%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+}
+.ambient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  background-image:
+    linear-gradient(rgb(130 170 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(130 170 255 / 0.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(70% 60% at 50% 20%, #000, transparent 75%);
+}
+
+/* --- layout -------------------------------------------------------------- */
+.container {
+  width: min(100% - 2 * var(--gutter), var(--container));
+  margin-inline: auto;
+}
+.section {
+  padding-block: var(--section-y);
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: -80px;
+  z-index: 400;
+  padding: 12px 20px;
+  border-radius: var(--r-pill);
+  background: var(--light);
+  color: var(--ink);
+  font-weight: 700;
+  transition: top var(--dur-micro) var(--ease);
+}
+.skip-link:focus-visible {
+  top: 16px;
+}
+
+/* --- tipografia ---------------------------------------------------------- */
+.display,
+.h-hero,
+.h-1,
+.h-2,
+.h-3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  word-spacing: 0.06em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+.h-hero {
+  font-size: var(--fs-hero);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+}
+.h-1 {
+  font-size: var(--fs-1);
+  line-height: 0.96;
+}
+.h-2 {
+  font-size: var(--fs-2);
+}
+.h-3 {
+  font-size: var(--fs-3);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+.lead {
+  margin: 0;
+  max-width: 58ch;
+  color: var(--text-2);
+  font-size: var(--fs-lead);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--blue-soft);
+}
+.eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.7;
+}
+.grad-text {
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.muted {
+  color: var(--text-3);
+}
+
+/* --- revelações ---------------------------------------------------------- */
+/* A condicao e o modo de movimento publicado em <html data-motion>
+   (lib/movimento): o interruptor do site vale aqui tambem. Sem JS o
+   atributo nunca existe e nada se esconde. */
+html.js[data-motion="completo"] .reveal {
+  transition:
+    opacity var(--dur-reveal) var(--ease) var(--d, 0s),
+    transform var(--dur-reveal) var(--ease) var(--d, 0s),
+    filter var(--dur-reveal) var(--ease) var(--d, 0s),
+    clip-path var(--dur-slow) var(--ease) var(--d, 0s);
+}
+html.js[data-motion="completo"] .reveal:not([data-in]) {
+  opacity: 0;
+}
+html.js[data-motion="completo"] .reveal[data-reveal="up"]:not([data-in]) {
+  transform: translateY(32px);
+}
+html.js[data-motion="completo"] .reveal[data-reveal="left"]:not([data-in]) {
+  transform: translateX(-36px);
+}
+html.js[data-motion="completo"] .reveal[data-reveal="right"]:not([data-in]) {
+  transform: translateX(36px);
+}
+html.js[data-motion="completo"] .reveal[data-reveal="scale"]:not([data-in]) {
+  transform: scale(0.94);
+}
+html.js[data-motion="completo"] .reveal[data-reveal="blur"]:not([data-in]) {
+  transform: translateY(16px);
+  filter: blur(14px);
+}
+html.js[data-motion="completo"] .reveal[data-reveal="mask"]:not([data-in]) {
+  opacity: 1;
+  clip-path: inset(0 100% 0 0);
+}
+
+html.js[data-motion="completo"] .lines .line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+html.js[data-motion="completo"] .lines .line > span {
+  display: block;
+  transition:
+    transform var(--dur-slow) var(--ease) calc(var(--d, 0s) + var(--i, 0) * 90ms),
+    opacity var(--dur-reveal) var(--ease) calc(var(--d, 0s) + var(--i, 0) * 90ms);
+}
+html.js[data-motion="completo"] .lines:not([data-in]) .line > span {
+  transform: translateY(108%);
+  opacity: 0;
+}
+.lines .line {
+  display: block;
+}
+
+/* --- o decalqzinho: piscadinha (mesma na intro e na logo) ------------------ */
+.decalq-olho {
+  transform-box: fill-box;
+  transform-origin: 50% 92%;
+}
+.decalq-olho.piscadinha {
+  animation: decalq-piscadinha 0.4s var(--ease);
+}
+@keyframes decalq-piscadinha {
+  0% {
+    transform: scaleY(1);
+  }
+  30%,
+  55% {
+    transform: scaleY(0.12);
+  }
+  82% {
+    transform: scaleY(1.08);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+/* --- estados de página --------------------------------------------------- */
+/* Os brilhos decorativos passam da borda da tela de propósito; `clip` corta o
+   excesso sem criar contêiner de rolagem, então o sticky segue funcionando. */
+main {
+  display: block;
+  overflow-x: clip;
+}
+
+/* --- transição entre rotas ------------------------------------------------
+   Entrada: a rota nova sobe um pouco e aparece. `both` deixa o estado final
+   em `transform: none`, então não sobra bloco de contenção para `fixed`.
+   Saída: `data-leaving` (marcado por ScrollMemory no clique) escurece o que
+   está saindo enquanto a próxima rota carrega. */
+.route {
+  animation: route-in 420ms var(--ease) both;
+}
+@keyframes route-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+html[data-leaving="true"] main {
+  opacity: 0.5;
+  transition: opacity 140ms var(--ease);
+}
+/* modo calmo: sem deslocamento, só o cruzamento de opacidade, mais curto */
+html[data-motion="calmo"] .route {
+  animation: route-in-calmo 220ms var(--ease) both;
+}
+@keyframes route-in-calmo {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+html[data-motion="calmo"][data-leaving="true"] main {
+  opacity: 0.65;
+}
+.page-top {
+  padding-top: calc(var(--header-h) + clamp(48px, 8vw, 110px));
+}
